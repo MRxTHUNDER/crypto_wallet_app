@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:wallet_app/screens/send_address.dart';
+import 'package:wallet_app/screens/send_username.dart';
 import 'package:wallet_app/screens/swap.dart';
 import 'package:wallet_app/services/wallet_service.dart';
 
@@ -81,8 +83,9 @@ class _HomeViewState extends State<HomeView> {
                   Text(
                     'Total Balance',
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 153, 97, 97),
+                      
                     ),
                   ),
                   Row(
@@ -104,6 +107,16 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+              child: Text(
+                _walletAddress,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
               ),
             ),
             Padding(
@@ -133,36 +146,27 @@ class _HomeViewState extends State<HomeView> {
                 thickness: 1,
                 color: Colors.grey[300],
               ),
-            // Padding(
-            //   padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-            //   child: Text(
-            //     _walletAddress,
-            //     style: TextStyle(
-            //       fontSize: 14,
-            //       color: Colors.grey,
-            //     ),
-            //   ),
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       TextButton(
-            //         onPressed: _createWallet,
-            //         child: Text('Create Wallet'),
-            //       ),
-            //       TextButton(
-            //         onPressed: _retrieveBalance,
-            //         child: Text('Retrieve Balance'),
-            //       ),
-            //       TextButton(
-            //         onPressed: _requestAirdrop,
-            //         child: Text('Request Airdrop'),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: _createWallet,
+                    child: Text('Create Wallet'),
+                  ),
+                  TextButton(
+                    onPressed: _retrieveBalance,
+                    child: Text('Retrieve Balance'),
+                  ),
+                  TextButton(
+                    onPressed: _requestAirdrop,
+                    child: Text('Request Airdrop'),
+                  ),
+                ],
+              ),
+            ),
             Divider(
               thickness: 1,
               color: Colors.grey[300],
@@ -301,16 +305,33 @@ Widget buildBottomSheet(BuildContext context) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          TextButton.icon(
-            onPressed: () => Navigator.pop(context), // Close the bottom sheet
-            icon: Icon(Icons.account_box),
-            label: Text('Address'),
+          
+          TextButton(
+            onPressed: () {
+              Get.to(() => sendAddress());
+              //Navigator.pop(context); // Close the bottom sheet
+            },
+            child: Row(
+              children: [
+                Icon(Icons.account_box),
+                SizedBox(width: 5),
+                Text('Address'),
+              ],
+            ),
           ),
-          TextButton.icon(
-            onPressed: () => Navigator.pop(context), // Close the bottom sheet
-            icon: Icon(Icons.person),
-            label: Text('Username'),
-          ),
+        TextButton(
+            onPressed: () {
+              Get.to(() => sendUsername());
+              //Navigator.pop(context); // Close the bottom sheet
+            },
+            child: Row(
+              children: [
+                Icon(Icons.person),
+                SizedBox(width: 5),
+                Text('Username'),
+              ],
+            ),
+        ),
         ],
       ),
     );
