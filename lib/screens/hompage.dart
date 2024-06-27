@@ -71,33 +71,46 @@ class _HomeViewState extends State<HomeView> {
     _createWallet();
   }
 
-  // void _retrieveBalance() async {
-  //   try {
-  //     final response = await WalletService.retrieveBalance(_walletAddress);
-  //     setState(() {
-  //       _balance = response['balance'];
-  //       _statusMessage = 'Balance Retrieved Successfully';
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       _statusMessage = 'Error retrieving balance: $e';
-  //     });
-  //   }
-  // }
+  void _retrieveBalance() async {
+    try {
+      final response = await WalletService.retrieveBalance(_walletAddress);
+      setState(() {
+        _balance = response['balance'];
+        _statusMessage = 'Balance Retrieved Successfully';
+      });
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Error retrieving balance: $e';
+      });
+    }
+  }
 
-  // void _requestAirdrop() async {
-  //   try {
-  //     final response = await WalletService.requestAirdrop(_walletAddress);
-  //     _retrieveBalance(); // Refresh balance after airdrop
-  //     setState(() {
-  //       _statusMessage = 'Airdrop Requested Successfully';
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       _statusMessage = 'Error requesting airdrop: $e';
-  //     });
-  //   }
-  // }
+  @override
+  void initState() {
+    
+    super.initState();
+    _retrieveBalance();
+  }
+
+  void _requestAirdrop() async {
+    try {
+      final response = await WalletService.requestAirdrop(_walletAddress);
+      _retrieveBalance(); // Refresh balance after airdrop
+      setState(() {
+        _statusMessage = 'Airdrop Requested Successfully';
+      });
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Error requesting airdrop: $e';
+      });
+    }
+  }
+  @override
+  void initState() {
+    
+    super.initState();
+    _requestAirdrop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,14 +206,14 @@ class _HomeViewState extends State<HomeView> {
                     onPressed: _createWallet,
                     child: const Text('Create Wallet'),
                   ),
-                  // TextButton(
-                  //   onPressed: _retrieveBalance,
-                  //   child: Text('Retrieve Balance'),
-                  // ),
-                  // TextButton(
-                  //   onPressed: _requestAirdrop,
-                  //   child: Text('Request Airdrop'),
-                  // ),
+                  TextButton(
+                    onPressed: _retrieveBalance,
+                    child: Text('Retrieve Balance'),
+                  ),
+                  TextButton(
+                    onPressed: _requestAirdrop,
+                    child: Text('Request Airdrop'),
+                  ),
                 ],
               ),
             ),
