@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 
 class SwapView extends StatefulWidget {
+  const SwapView({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SwapViewState createState() => _SwapViewState();
 }
 
@@ -21,28 +24,28 @@ class _SwapViewState extends State<SwapView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Swap'),
+        title: const Text('Swap'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Container(
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Swap',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Divider(thickness: 1),
+                const Divider(thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'You Pay',
                       style: TextStyle(
                         fontSize: 16,
@@ -54,7 +57,7 @@ class _SwapViewState extends State<SwapView> {
                         SizedBox(
                           width: 100,
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Enter amount',
                             ),
                             keyboardType: TextInputType.number,
@@ -66,15 +69,15 @@ class _SwapViewState extends State<SwapView> {
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         DropdownButton<String>(
                           value: givingToken,
-                          items: [
+                          items: const [
                             DropdownMenuItem(
-                              child: Text('VIBLE'),
                               value: 'VIBLE',
+                              child: Text('VIBLE'),
                             ),
                             // Add more dropdown items as needed
                           ],
@@ -89,11 +92,11 @@ class _SwapViewState extends State<SwapView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'You Receive',
                       style: TextStyle(
                         fontSize: 16,
@@ -106,25 +109,25 @@ class _SwapViewState extends State<SwapView> {
                           width: 100,
                           child: Text(
                             amountToReceive,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         DropdownButton<String>(
                           value: receivingToken,
-                          items: [
+                          items: const [
                             DropdownMenuItem(
-                              child: Text('Uniswap'),
                               value: 'Uniswap',
+                              child:  Text('Uniswap'),
                             ),
                             DropdownMenuItem(
-                              child: Text('Tether'),
                               value: 'Tether',
+                              child: Text('Tether'),
                             ),
                             // Add more dropdown items as needed
                           ],
@@ -139,13 +142,13 @@ class _SwapViewState extends State<SwapView> {
                     ),
                   ],
                 ),
-                Divider(thickness: 1),
-                SizedBox(height: 20),
+                const Divider(thickness: 1),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     // Implement swap functionality here
                   },
-                  child: Text('Swap'),
+                  child: const Text('Swap'),
                 ),
               ],
             ),

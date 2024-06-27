@@ -1,30 +1,61 @@
 // lib/screens/homepage.dart
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:wallet_app/screens/send_address.dart';
 import 'package:wallet_app/screens/send_username.dart';
 import 'package:wallet_app/screens/swap.dart';
+import 'package:http/http.dart' as http;
 import 'package:wallet_app/services/wallet_service.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomeViewState createState() => _HomeViewState();
 }
+
 
 class _HomeViewState extends State<HomeView> {
   String _walletAddress = '0x5BDb...56218';
   double _balance = 0.0;
   String _statusMessage = '';
+  Map? mapResource= null  ;
+  
+
+  // Future apicall() async{
+  //   http.Response response;
+  //   response= await http.get(Uri.parse("https://reqres.in/api/users/2"));
+
+  //   print(response);
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       mapResource = json.decode(response.body);
+  //     });
+    
+  //   }
+  //   print(response);
+  // }
+
+// @override
+//   void initState() {
+//     
+//     super.initState();
+//     apicall();
+//   }
 
   void _createWallet() async {
+
     try {
       final response = await WalletService.createWallet();
       setState(() {
-        _walletAddress = response['address'];
+        _walletAddress = response['walletName'];
+        //map = _walletAddress['wallet'];
+
         _statusMessage = 'Wallet Created Successfully';
       });
     } catch (e) {
@@ -33,41 +64,47 @@ class _HomeViewState extends State<HomeView> {
       });
     }
   }
-
-  void _retrieveBalance() async {
-    try {
-      final response = await WalletService.retrieveBalance(_walletAddress);
-      setState(() {
-        _balance = response['balance'];
-        _statusMessage = 'Balance Retrieved Successfully';
-      });
-    } catch (e) {
-      setState(() {
-        _statusMessage = 'Error retrieving balance: $e';
-      });
-    }
+  @override
+  void initState() {
+    
+    super.initState();
+    _createWallet();
   }
 
-  void _requestAirdrop() async {
-    try {
-      final response = await WalletService.requestAirdrop(_walletAddress);
-      _retrieveBalance(); // Refresh balance after airdrop
-      setState(() {
-        _statusMessage = 'Airdrop Requested Successfully';
-      });
-    } catch (e) {
-      setState(() {
-        _statusMessage = 'Error requesting airdrop: $e';
-      });
-    }
-  }
+  // void _retrieveBalance() async {
+  //   try {
+  //     final response = await WalletService.retrieveBalance(_walletAddress);
+  //     setState(() {
+  //       _balance = response['balance'];
+  //       _statusMessage = 'Balance Retrieved Successfully';
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _statusMessage = 'Error retrieving balance: $e';
+  //     });
+  //   }
+  // }
+
+  // void _requestAirdrop() async {
+  //   try {
+  //     final response = await WalletService.requestAirdrop(_walletAddress);
+  //     _retrieveBalance(); // Refresh balance after airdrop
+  //     setState(() {
+  //       _statusMessage = 'Airdrop Requested Successfully';
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _statusMessage = 'Error requesting airdrop: $e';
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Wallet'),
-        actions: [
+        title: const Text('Wallet'),
+        actions: const [
           Icon(Icons.more_horiz),
         ],
       ),
@@ -76,11 +113,11 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total Balance',
                     style: TextStyle(
                       fontSize: 20,
@@ -90,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         '\$',
                         style: TextStyle(
                           fontSize: 20,
@@ -99,7 +136,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       Text(
                         _balance.toStringAsFixed(2),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -110,17 +147,17 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: Text(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+              child: Text( 
                 _walletAddress,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
             ),
             Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -131,13 +168,13 @@ class _HomeViewState extends State<HomeView> {
                           builder: (context) => buildBottomSheet(context),
                         );
                       },
-                      child: Text('Send'),
+                      child: const Text('Send'),
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.to(() => SwapView());
+                        Get.to(() => const SwapView());
                       },
-                      child: Text('Swap'),
+                      child: const Text('Swap'),
                     ),
                   ],
                 ),
@@ -148,22 +185,22 @@ class _HomeViewState extends State<HomeView> {
               ),
             
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                     onPressed: _createWallet,
-                    child: Text('Create Wallet'),
+                    child: const Text('Create Wallet'),
                   ),
-                  TextButton(
-                    onPressed: _retrieveBalance,
-                    child: Text('Retrieve Balance'),
-                  ),
-                  TextButton(
-                    onPressed: _requestAirdrop,
-                    child: Text('Request Airdrop'),
-                  ),
+                  // TextButton(
+                  //   onPressed: _retrieveBalance,
+                  //   child: Text('Retrieve Balance'),
+                  // ),
+                  // TextButton(
+                  //   onPressed: _requestAirdrop,
+                  //   child: Text('Request Airdrop'),
+                  // ),
                 ],
               ),
             ),
@@ -171,7 +208,7 @@ class _HomeViewState extends State<HomeView> {
               thickness: 1,
               color: Colors.grey[300],
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +230,7 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: Row(
                 children: [
@@ -234,7 +271,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: Row(
                 children: [
                   Container(
@@ -244,7 +281,7 @@ class _HomeViewState extends State<HomeView> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.purple[100],
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'MATIC',
                         style: TextStyle(
@@ -255,10 +292,10 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -281,10 +318,10 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Text(
                 _statusMessage,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.red,
                 ),
@@ -311,7 +348,7 @@ Widget buildBottomSheet(BuildContext context) {
               Get.to(() => sendAddress());
               //Navigator.pop(context); // Close the bottom sheet
             },
-            child: Row(
+            child: const Row(
               children: [
                 Icon(Icons.account_box),
                 SizedBox(width: 5),
@@ -324,7 +361,7 @@ Widget buildBottomSheet(BuildContext context) {
               Get.to(() => sendUsername());
               //Navigator.pop(context); // Close the bottom sheet
             },
-            child: Row(
+            child: const Row(
               children: [
                 Icon(Icons.person),
                 SizedBox(width: 5),

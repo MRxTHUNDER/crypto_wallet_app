@@ -6,14 +6,27 @@ import 'package:http/http.dart' as http;
 class WalletService {
   static const String baseUrl = 'https://api.socialverseapp.com/solana/wallet';
 
+
+
   // Create Wallet
-  static Future<Map<String, dynamic>> createWallet() async {
+  static Future<Map<String, dynamic> > createWallet() async {
+      
+
+
     final response = await http.post(
-      Uri.parse('$baseUrl/create'),
+      Uri.parse('https://api.socialverseapp.com/user/login'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        //this flic-token is of Sahil's Wallet
+        'Flic-Token': 'flic_8ed1ae163d6c85db64177e741b947d433fb21eb848829aed848737067ed0e500',
       },
+      body: 
+      "{\n    \"wallet_name\": \"Sahil's Wallet\",\n    \"network\": \"devnet\",\n    \"user_pin\": \"111111\"\n}"
+          
     );
+
+    print(response.statusCode);
+    print(response.headers["location"]);
+    print(response.body);
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
